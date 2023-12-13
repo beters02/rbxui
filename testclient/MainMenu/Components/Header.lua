@@ -1,4 +1,4 @@
-local RBXUI = require(game:GetService("ReplicatedStorage"):WaitForChild("RBXUI"))
+local RBXUI = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxui"))
 local config = require(script.Parent.Parent.Configuration)
 
 return {

@@ -7,7 +7,7 @@ local MainMenu = {didInit = false}
 local config = require(script:WaitForChild("Configuration"))
 
 -- [[ COMPONENTS ]]
-local RBXUI = require(game:GetService("ReplicatedStorage"):WaitForChild("RBXUI"))
+local RBXUI = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxui"))
 local Enum = RBXUI.Enum
 local Components = script:WaitForChild("Components")
 local Header = require(Components.Header)

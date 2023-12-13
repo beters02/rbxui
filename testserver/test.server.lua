@@ -1,4 +1,4 @@
---[[local rbxui = require(game:GetService("ReplicatedStorage").RBXUI)
+--[[local rbxui = require(game:GetService("ReplicatedStorage").rbxui)
 
 local Gui = rbxui.Gui
 local Page = rbxui.Page
