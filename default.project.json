@@ -1,0 +1,25 @@
+{
+  "name": "Roblox GUI Library",
+  "tree": {
+    "$className": "DataModel",
+
+    "ReplicatedStorage": {
+        "$path": "src"
+    },
+
+    "ServerScriptService": {
+      "Test": {
+        "$path": "testserver"
+      }
+    },
+
+    "StarterPlayer": {
+      "StarterPlayerScripts": {
+        "Test": {
+          "$path": "testclient"
+        }
+      }
+    }
+
+  }
+}
