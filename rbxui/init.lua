@@ -439,15 +439,10 @@ function FitText:SetSize(size)
 end
 
 --[[TAG]]
-local TagsFolder = ReplicatedStorage:FindFirstChild("rbxuiTags")
-TagsFolder = TagsFolder or Instance.new("Folder", ReplicatedStorage)
-TagsFolder.Name = "rbxuiTags"
-
 Tag = {tags = {}}
 Tag.__index = Tag
 
 function Tag.Add(component, tag)
-    print(component)
     if not Tag.tags[tag] then
         Tag.tags[tag] = {}
     end
@@ -476,10 +471,8 @@ function Tag.RemoveAllTags(component)
 end
 
 function Tag.DestroyAllIn(tag)
-    print(Tag.tags[tag])
     if Tag.tags[tag] then
         for i, v in pairs(Tag.tags[tag]) do
-            print(v)
             v:Destroy()
             Tag.tags[tag][i] = nil
         end
