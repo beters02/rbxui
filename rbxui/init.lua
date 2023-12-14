@@ -442,11 +442,26 @@ function Tag.Add(component, tag)
         Tag.tags[tag] = {}
     end
     Tag.tags[component.Name] = component
+    if not component.Tags then
+        component.Tags = {}
+    end
+    component.Tags[tag] = true
 end
 
 function Tag.Remove(component, tag)
     if Tag.tags[tag] and Tag.tags[tag][component.Name] then
         Tag.tags[tag][component.Name] = nil
+    end
+    if component.Tags and component.Tags[tag] then
+        component.Tags[tag] = nil
+    end
+end
+
+function Tag.RemoveAllTags(component)
+    if component.Tags then
+        for i, _ in pairs(component.Tags) do
+            Tag.Remove(component, i)
+        end
     end
 end
 
