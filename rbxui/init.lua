@@ -1,12 +1,16 @@
+local RunService = game:GetService("RunService")
 -- [[ TODO ]]
 -- Add UIConstraint Functionality
+-- Add Updating Variables for text related components -- VariableLink ?
+-- Make FitText the default text option for Button and remove ButtonLabel, as well as remove public access to FitText
 
 -- INFO
 --@creator  beters
 --@summary  RBXUI is a simple solution for creating roblox UI via code.
 --@tutorial
 --[[ =
-
+    - rbxui is to be used on the client only.
+    - Button Binds are automatically disconnected when the parent page is closed.
 --= ]]
 
 -- Components
@@ -16,6 +20,9 @@ local Button
 local FitText
 local Label
 local ButtonLabel
+
+-- Features
+local Tag
 
 -- Script Functions
 function setFitText(self, str) self.Instance.Text = str end
@@ -99,6 +106,9 @@ function Gui:Enable()
 end
 
 function Gui:Disable()
+    if self.CurrentPage then
+        self.CurrentPage:Close()
+    end
     self.Instance.Enabled = false
 end
 
@@ -115,6 +125,15 @@ function Gui:SetBackgroundImage(imgid)
     imglabel.Image = imgid
     imglabel.Visible = true
     return imglabel
+end
+
+function Gui:Destroy()
+    self:Disable()
+    for i, v in pairs(self.Pages) do
+        v:Close()
+    end
+    self.Instance:Destroy()
+    self = nil
 end
 
 --@enum Preset Gui Sizes
@@ -161,6 +180,16 @@ Page.new = function(gui, rbxprop)
         self.Folders[i] = Instance.new("Folder", self.Instance)
         self.Folders[i].Name = i
     end
+
+    self._nextUpdate = tick()
+    self.CoreUpdateLoop = RunService.RenderStepped:Connect(function(dt)
+        local t = tick()
+        if t >= self._nextUpdate then
+            self._nextUpdate = t + 1/30
+        end
+
+        -- update variables function here
+    end)
 
     return self
 end
@@ -402,6 +431,32 @@ end
 --@function Set the size
 function FitText:SetSize(size)
     return setComponentSize(self, size)
+end
+
+--[[TAG]]
+Tag = {tags = {}}
+Tag.__index = Tag
+
+function Tag.Add(component, tag)
+    if not Tag.tags[tag] then
+        Tag.tags[tag] = {}
+    end
+    Tag.tags[component.Name] = component
+end
+
+function Tag.Remove(component, tag)
+    if Tag.tags[tag] and Tag.tags[tag][component.Name] then
+        Tag.tags[tag][component.Name] = nil
+    end
+end
+
+function Tag.DestroyAllIn(tag)
+    if Tag.tags[tag] then
+        for i, v in pairs(Tag.tags[tag]) do
+            v:Destroy()
+            Tag.tags[tag][i] = nil
+        end
+    end
 end
 
 --[[MODULE]]

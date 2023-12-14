@@ -7,12 +7,12 @@ local MainMenu = {didInit = false}
 local config = require(script:WaitForChild("Configuration"))
 
 -- [[ COMPONENTS ]]
-local RBXUI = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxui"))
-local Enum = RBXUI.Enum
 local Components = script:WaitForChild("Components")
 local Header = require(Components.Header)
 local Footer = require(Components.Footer)
 local Button = require(Components.Button)
+local RBXUI = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxui"))
+local Enum = RBXUI.Enum
 
 function MainMenu.Init()
     if MainMenu.didInit then
@@ -42,7 +42,7 @@ function MainMenu.Init()
         caspos.Y.Scale
     )
 
-    -- main header & footer takes two main buttons sizes and one pad
+    -- main header & footer takes two main buttons sizes and one pad for x
     local mainHeaderSize = UDim2.fromScale(
         (config.DEF_MAIN_BUTTON_SIZE.X.Scale * 2) + config.DEF_PAD,
         config.DEF_MAIN_BUTTON_SIZE.Y.Scale * config.DEF_HEADER_SIZE_Y_MOD
@@ -69,7 +69,7 @@ function MainMenu.Init()
         AnchorPoint = Vector2.new(0.5, 0),
     })
 
-    -- solo footer takes 1 button size
+    -- solo footer takes 1 button size for
     local SoloCancelFooter = Footer.Button(soloPage, "Cancel", {
         Position = UDim2.fromScale(
             StableButton.Instance.Position.X.Scale,
