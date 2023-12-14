@@ -1,3 +1,4 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 -- [[ TODO ]]
 -- Add UIConstraint Functionality
@@ -72,6 +73,7 @@ Gui.new = function(rbxprop)
     assert(rbxprop.Name, "Must define a name for the GUI.")
 
     local self = setmetatable({}, Gui)
+    self.Name = rbxprop.Name
     self.EnableOpenMainPage = true
 
     self.Instance = Instance.new("ScreenGui")
@@ -244,6 +246,7 @@ Button.new = function(page, rbxprop)
     rbxprop = rbxprop or {}
 
     local self = setmetatable({}, Button)
+    self.Name = rbxprop.Name
     self.Main = page
     self.Main.Buttons[rbxprop.Name] = self
     self._connections = {}
@@ -317,6 +320,7 @@ Label.new = function(page, rbxprop, textprop)
     textprop = textprop or {}
 
     local self = setmetatable({}, Label)
+    self.Name = rbxprop.Name
     self.Main = page
     self.Main.Labels[rbxprop.Name] = self
     self.Instance = Instance.new("Frame", page.Folders.Labels)
@@ -402,6 +406,7 @@ FitText = {}
 FitText.__index = FitText
 FitText.new = function(component, rbxprop)
     local self = setmetatable({}, FitText)
+    self.Name = component.Name
     local text = Instance.new("TextLabel", component.Instance)
     applyRBXPropertiesInstance(text, rbxprop, {
         Text = "FitText",
@@ -434,14 +439,19 @@ function FitText:SetSize(size)
 end
 
 --[[TAG]]
+local TagsFolder = ReplicatedStorage:FindFirstChild("rbxuiTags")
+TagsFolder = TagsFolder or Instance.new("Folder", ReplicatedStorage)
+TagsFolder.Name = "rbxuiTags"
+
 Tag = {tags = {}}
 Tag.__index = Tag
 
 function Tag.Add(component, tag)
+    print(component)
     if not Tag.tags[tag] then
         Tag.tags[tag] = {}
     end
-    Tag.tags[component.Name] = component
+    Tag.tags[tag][component.Name] = component
     if not component.Tags then
         component.Tags = {}
     end
@@ -466,8 +476,10 @@ function Tag.RemoveAllTags(component)
 end
 
 function Tag.DestroyAllIn(tag)
+    print(Tag.tags[tag])
     if Tag.tags[tag] then
         for i, v in pairs(Tag.tags[tag]) do
+            print(v)
             v:Destroy()
             Tag.tags[tag][i] = nil
         end
@@ -485,7 +497,8 @@ local RBXUI = {
     Enum = {
         Pos = Gui.PosEnum,
         Size = Gui.SizeEnum
-    }
+    },
+    Tag = Tag
 }
 
 return RBXUI
