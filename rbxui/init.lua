@@ -61,6 +61,7 @@ function inheritDefaultProperties(defaults, rbxprop)
         if rbxprop[i] ~= nil then continue end
         rbxprop[i] = v
     end
+    return rbxprop
 end
 
 --[[GUI COMPONENT]]
@@ -130,6 +131,7 @@ function Gui:SetBackgroundImage(imgid)
 end
 
 function Gui:Destroy()
+    Tag.RemoveAllTags(self)
     self:Disable()
     for i, v in pairs(self.Pages) do
         v:Close()
@@ -178,7 +180,7 @@ Page.new = function(gui, rbxprop)
     self.Buttons = {}
     self.Labels = {}
     self.Folders = {Buttons = true, Labels = true}
-    for i, v in pairs(self.Folders) do
+    for i, _ in pairs(self.Folders) do
         self.Folders[i] = Instance.new("Folder", self.Instance)
         self.Folders[i].Name = i
     end
